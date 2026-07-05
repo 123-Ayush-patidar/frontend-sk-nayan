@@ -63,9 +63,21 @@ const ProductForm = () => {
     setForm((f) => ({ ...f, nutrition: { ...f.nutrition, [key]: value } }));
   };
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // keep in sync with backend limit
+
   const handleFileChange = async (e) => {
     const files = e.target.files;
     if (!files.length) return;
+
+    const oversized = Array.from(files).filter((f) => f.size > MAX_FILE_SIZE);
+    if (oversized.length) {
+      setError(
+        `${oversized.map((f) => f.name).join(", ")} is larger than ${MAX_FILE_SIZE / (1024 * 1024)}MB. Please compress the image (PNG files are often much larger than JPG/WEBP) and try again.`
+      );
+      e.target.value = ""; // reset input so the same file can be reselected after fixing
+      return;
+    }
+
     const formData = new FormData();
     Array.from(files).forEach((f) => formData.append("images", f));
     try {
@@ -145,7 +157,7 @@ const ProductForm = () => {
               <select name="category" value={form.category} onChange={handleChange} style={inputStyle}>
                 <option>Frozen Vegetables</option>
                 <option>Frozen Fruits</option>
-                <option>Frozen Mix</option>
+                <option>Ready To Eat</option>
                 <option>Other</option>
               </select>
             </div>

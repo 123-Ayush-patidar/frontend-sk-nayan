@@ -6,7 +6,7 @@ import { useGetProductsQuery } from "../store/apiSlice";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
 
-const categories = ["All", "Frozen Vegetables", "Frozen Fruits", "Frozen Mix", "Other"];
+const categories = ["All", "Frozen Vegetables", "Frozen Fruits", "Ready To Eat", "Other"];
 
 const AllProducts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
